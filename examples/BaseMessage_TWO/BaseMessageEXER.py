@@ -20,14 +20,28 @@ system_msg = "you are a helpful assistant that responds to user queries."
 
 chat_agent = ChatAgent(model=model, system_message=system_msg,output_language="zh")
 
-user_msg_with_meta = BaseMessage.make_user_message(
+# 第一轮对话
+user_msg1 = BaseMessage.make_user_message(
     role_name="User",
-    content="Hello! Can you tell me something about Shandong University(weihai)?",
+    content="What is the purpose of CAMEL?",
     meta_dict={
             "processing_time": 1.23, "api_version": "v2", "user_id": "1234567890",
-            "user_preference": "simply", "language_setting": "zh-CN", "region": "Shandong"
+            "user_preference": "simply", "language_setting": "zh-CN", "region": "Shandong",
+            "turn": 1
     }
 )
-response = chat_agent.step(user_msg_with_meta)
+response1 = chat_agent.step(user_msg1)
+print("Assistant Response 1:", response1.msgs[0].content)
 
-print("Assistant Response:", response.msgs[0].content)
+# 第二轮对话
+user_msg2 = BaseMessage.make_user_message(
+    role_name="User",
+    content="Can you provide an example of using CAMEL for multi-agent collaboration?",
+    meta_dict={
+            "processing_time": 1.56, "api_version": "v2", "user_id": "1234567890",
+            "user_preference": "simply", "language_setting": "zh-CN", "region": "Shandong",
+            "turn": 2
+    }
+)
+response2 = chat_agent.step(user_msg2)
+print("Assistant Response 2:", response2.msgs[0].content)
